@@ -37,6 +37,18 @@
 				<artifactId>shiro-core</artifactId>
 				<version>${shiro.version}</version>
 			</dependency>
+            <!--shiro spring支持，依赖shiro-core和web模块-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <!--shiro web支持-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-web</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
