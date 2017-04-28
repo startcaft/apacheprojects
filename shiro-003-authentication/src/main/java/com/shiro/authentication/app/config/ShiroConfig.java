@@ -1,6 +1,7 @@
 package com.shiro.authentication.app.config;
 
 import com.shiro.authentication.app.realm.ShiroRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -43,10 +44,22 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
+    /*配置具体的凭证匹配器，并设置其加密算法和加密次数*/
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+        hashedCredentialsMatcher.setHashIterations(1024);
+        return hashedCredentialsMatcher;
+    }
+
     /*配置自定义Realm，也就是安全数据的来源*/
     @Bean
-    public ShiroRealm shiroRealm() {
-        return new ShiroRealm();
+    public ShiroRealm shiroRealm(@Autowired HashedCredentialsMatcher hashedCredentialsMatcher) {
+
+        ShiroRealm realm = new ShiroRealm();
+        realm.setCredentialsMatcher(hashedCredentialsMatcher);
+        return realm;
     }
 
     /*配置核心安全管理器SecurityManager，依赖于Realm，必须从中读取安全数据*/
