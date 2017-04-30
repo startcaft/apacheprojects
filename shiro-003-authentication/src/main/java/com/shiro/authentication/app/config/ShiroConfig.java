@@ -1,9 +1,14 @@
 package com.shiro.authentication.app.config;
 
+import com.shiro.authentication.app.realm.SecondRealm;
 import com.shiro.authentication.app.realm.ShiroRealm;
+import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.pam.AllSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -20,6 +25,8 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by startcaft on 2017/4/27.
@@ -44,33 +51,54 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
-    /*配置具体的凭证匹配器，并设置其加密算法和加密次数*/
+    /*配置自定义Realm，也就是安全数据的来源，MD5加密*/
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
-        hashedCredentialsMatcher.setHashIterations(1024);
-        return hashedCredentialsMatcher;
-    }
-
-    /*配置自定义Realm，也就是安全数据的来源*/
-    @Bean
-    public ShiroRealm shiroRealm(@Autowired HashedCredentialsMatcher hashedCredentialsMatcher) {
+    public ShiroRealm shiroRealm() {
 
         ShiroRealm realm = new ShiroRealm();
-        realm.setCredentialsMatcher(hashedCredentialsMatcher);
+        HashedCredentialsMatcher md5 = new HashedCredentialsMatcher();
+        md5.setHashAlgorithmName("MD5");
+        md5.setHashIterations(1024);
+        realm.setCredentialsMatcher(md5);
         return realm;
     }
 
-    /*配置核心安全管理器SecurityManager，依赖于Realm，必须从中读取安全数据*/
+    /*配置自定义Realm，组成多Realm认证，SHA1加密*/
     @Bean
-    public SecurityManager securityManager(@Autowired ShiroRealm shiroRealm,
+    public SecondRealm secondRealm(){
+        SecondRealm secondRealm = new SecondRealm();
+        HashedCredentialsMatcher sha1 = new HashedCredentialsMatcher();
+        sha1.setHashAlgorithmName("SHA1");
+        sha1.setHashIterations(1024);
+        secondRealm.setCredentialsMatcher(sha1);
+        return secondRealm;
+    }
+
+    /*配置认证器，如果有需要可以改变一下默认的认证策略*/
+    @Bean
+    public Authenticator authenticator(@Autowired ShiroRealm shiroRealm,
+                                       @Autowired SecondRealm secondRealm){
+        ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
+
+        List<Realm> mulRealms = new LinkedList<>();
+        mulRealms.add(shiroRealm);
+        mulRealms.add(secondRealm);
+        authenticator.setRealms(mulRealms);
+        authenticator.setAuthenticationStrategy(new AllSuccessfulStrategy());//每个Realm认证成功才算验证通过
+
+        return  authenticator;
+    }
+
+    /*配置核心安全管理器SecurityManager，依赖于Realm或者认证器(多Realm认证)，必须从中读取安全数据*/
+    @Bean
+    public SecurityManager securityManager(@Autowired Authenticator authenticator,
                                            @Autowired EhCacheManager cacheManager) {
 
         LOGGER.info("shior------init");
 
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-        manager.setRealm(shiroRealm);
+        //manager.setRealm(shiroRealm);
+        manager.setAuthenticator(authenticator);//注入认证器
         manager.setCacheManager(cacheManager);
         return manager;
     }
