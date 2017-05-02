@@ -1,9 +1,12 @@
 package com.shiro.authorize.app.controller;
 
+import com.shiro.authorize.app.service.ShiroService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class LoginController {
+
+    @Autowired
+    private ShiroService shiroService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
@@ -57,4 +63,14 @@ public class LoginController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(){return "admin";}
+
+
+    @RequestMapping(value = "/anno",method = RequestMethod.GET)
+    @RequiresRoles({"user"})
+    public String testAnon(){
+
+        shiroService.testMethod();
+
+        return "redirect:/list";
+    }
 }

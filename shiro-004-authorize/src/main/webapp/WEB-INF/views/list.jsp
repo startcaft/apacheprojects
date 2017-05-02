@@ -29,5 +29,8 @@
         <a href="user">User</a>
     </shiro:hasRole>
 
+    <br>
+    <a href="anno">注解式授权(user)</a>
+
 </body>
 </html>
