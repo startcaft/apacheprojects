@@ -7,12 +7,16 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AllSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -24,6 +28,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,10 +95,25 @@ public class ShiroConfig {
         return  authenticator;
     }
 
+
+    @Bean
+    public RememberMeManager rememberMeManager(){
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+
+        //构建一个Cookie实例，默认实现SimpleCookie
+        Cookie cookie = new SimpleCookie();
+        cookie.setMaxAge(10);//10秒
+        cookie.setName("remeberMe");//cookie name
+
+        cookieRememberMeManager.setCookie(cookie);
+        return cookieRememberMeManager;
+    }
+
     /*配置核心安全管理器SecurityManager，依赖于Realm或者认证器(多Realm认证)，必须从中读取安全数据*/
     @Bean
     public SecurityManager securityManager(@Autowired Authenticator authenticator,
-                                           @Autowired EhCacheManager cacheManager) {
+                                           @Autowired EhCacheManager cacheManager,
+                                           @Autowired RememberMeManager rememberMeManager) {
 
         LOGGER.info("shior------init");
 
@@ -100,6 +121,8 @@ public class ShiroConfig {
         //manager.setRealm(shiroRealm);
         manager.setAuthenticator(authenticator);//注入认证器
         manager.setCacheManager(cacheManager);
+        manager.setRememberMeManager(rememberMeManager);//设置rememberMeManager
+
         return manager;
     }
 
@@ -133,6 +156,10 @@ public class ShiroConfig {
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/login", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/logout","logout");//登出
+
+        filterChainDefinitionMap.put("/list","user");//通过记住我登录也可以进行访问
+        //filterChainDefinitionMap.put("/admin","authc,roles[user]");//认证，还要拥有user权限
+
         filterChainDefinitionMap.put("/**", "authc");//标识需要认证才能访问
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
