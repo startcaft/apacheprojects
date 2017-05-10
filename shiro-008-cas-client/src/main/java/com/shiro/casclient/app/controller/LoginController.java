@@ -1,9 +1,12 @@
 package com.shiro.casclient.app.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shiro.casclient.app.config.ShiroConfig;
 
@@ -19,8 +22,13 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
     public String list() {
-        return "list";
+    	
+    	Subject subject = SecurityUtils.getSubject();
+    	String username = (String) subject.getPrincipal();
+    	
+        return "你好：" + username + "，是否包含[admin]角色：" + subject.hasRole("admin");
     }
     
     @RequestMapping(value="/login",method=RequestMethod.GET)
