@@ -40,7 +40,7 @@ public class XmlConfigBuilder {
         return doc;
     }
 
-    public void builderConfig(Configuration config) throws Exception {
+    public Document builderConfig(Configuration config) throws Exception {
         Element root = DocumentHelper.createElement("generatorConfiguration");
         Document document = DocumentHelper.createDocument(root);
 
@@ -54,6 +54,17 @@ public class XmlConfigBuilder {
             }
             throw new Exception(errorMsg);
         }
+
+        //验证指定的projectPath是否存在
+        errorMsg = "找不到指定的项目路径";
+        file = FileUtils.getFile(config.getProjectPath());
+        if (file == null) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug(errorMsg);
+            }
+            throw new Exception(errorMsg);
+        }
+
 
         //构建classPathEntry节点
         Element classPathEntryNode = root.addElement("classPathEntry");
@@ -104,71 +115,73 @@ public class XmlConfigBuilder {
                 .addAttribute("selectByExampleQueryId","false");
         tableNode.addElement("property").addAttribute("name","useActualColumnNames")
                 .addAttribute("value","true");
+
+        return document;
     }
 
-    public void builder(Configuration config) throws Exception {
-        //验证指定的jatPath是否存在
-        File file = FileUtils.getFile(config.getJarPath());
-        String errorMsg = "找不到指定的JDBC驱动包文件";
-
-        if (file == null) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(errorMsg);
-            }
-            throw new Exception(errorMsg);
-        }
-
-        //验证指定的projectPath是否存在
-        errorMsg = "找不到指定的项目路径";
-        file = FileUtils.getFile(config.getProjectPath());
-        if (file == null) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(errorMsg);
-            }
-            throw new Exception(errorMsg);
-        }
-
-        Element node = this.getNode(root, "classPathEntry");
-        //设置MGB配置文件的配置数据
-        node.attribute("location").setValue(config.getJarPath());
-
-        //以下内容是子节点context下的内容，contetx子节点需要设置id和targetRuntime属性
-        Element contextNode = this.getNode(root,"context");
-        contextNode.attribute("id").setValue("context1");
-        contextNode.attribute("targetRuntime").setValue("MyBatis3");
-
-        node = contextNode.element("jdbcConnection");
-        //设置MGB配置文件的JDBC连接信息
-        node.attribute("driverClass").setValue(config.getDriverClass());
-        node.attribute("connectionURL").setValue(config.getConnectionURL());
-        node.attribute("userId").setValue(config.getUserId());
-        node.attribute("password").setValue(config.getPassword());
-
-        node = contextNode.element("sqlMapGenerator");
-        //设置MGB配置文件的Mapper映射文件生成位置
-        node.attribute("targetProject").setValue(config.getProjectPath());
-        node.attribute("targetPackage").setValue(config.getMapperPackage());
-
-        node = contextNode.element("javaModelGenerator");
-        //设置MGB配置文件的数据库JavaBean文件生成位置
-        node.attribute("targetProject").setValue(config.getProjectPath());
-        node.attribute("targetPackage").setValue(config.getMapperPackage());
-
-        node = contextNode.element("javaClientGenerator");
-        //设置MGB配置文件的数据库JavaBean文件生成位置
-        node.attribute("targetProject").setValue(config.getProjectPath());
-        node.attribute("targetPackage").setValue(config.getMapperPackage());
-        node.attribute("type").setValue("XMLMAPPER");
-
-
-        node = contextNode.element("table");
-        //设置MGB配置文件的表名和类名
-        node.attribute("enableCountByExample").setValue("false");
-        node.attribute("enableUpdateByExample").setValue("false");
-        node.attribute("enableDeleteByExample").setValue("false");
-        node.attribute("enableSelectByExample").setValue("false");
-        node.attribute("selectByExampleQueryId").setValue("false");
-    }
+//    public void builder(Configuration config) throws Exception {
+//        //验证指定的jatPath是否存在
+//        File file = FileUtils.getFile(config.getJarPath());
+//        String errorMsg = "找不到指定的JDBC驱动包文件";
+//
+//        if (file == null) {
+//            if (LOGGER.isDebugEnabled()) {
+//                LOGGER.debug(errorMsg);
+//            }
+//            throw new Exception(errorMsg);
+//        }
+//
+//        //验证指定的projectPath是否存在
+//        errorMsg = "找不到指定的项目路径";
+//        file = FileUtils.getFile(config.getProjectPath());
+//        if (file == null) {
+//            if (LOGGER.isDebugEnabled()) {
+//                LOGGER.debug(errorMsg);
+//            }
+//            throw new Exception(errorMsg);
+//        }
+//
+//        Element node = this.getNode(root, "classPathEntry");
+//        //设置MGB配置文件的配置数据
+//        node.attribute("location").setValue(config.getJarPath());
+//
+//        //以下内容是子节点context下的内容，contetx子节点需要设置id和targetRuntime属性
+//        Element contextNode = this.getNode(root,"context");
+//        contextNode.attribute("id").setValue("context1");
+//        contextNode.attribute("targetRuntime").setValue("MyBatis3");
+//
+//        node = contextNode.element("jdbcConnection");
+//        //设置MGB配置文件的JDBC连接信息
+//        node.attribute("driverClass").setValue(config.getDriverClass());
+//        node.attribute("connectionURL").setValue(config.getConnectionURL());
+//        node.attribute("userId").setValue(config.getUserId());
+//        node.attribute("password").setValue(config.getPassword());
+//
+//        node = contextNode.element("sqlMapGenerator");
+//        //设置MGB配置文件的Mapper映射文件生成位置
+//        node.attribute("targetProject").setValue(config.getProjectPath());
+//        node.attribute("targetPackage").setValue(config.getMapperPackage());
+//
+//        node = contextNode.element("javaModelGenerator");
+//        //设置MGB配置文件的数据库JavaBean文件生成位置
+//        node.attribute("targetProject").setValue(config.getProjectPath());
+//        node.attribute("targetPackage").setValue(config.getMapperPackage());
+//
+//        node = contextNode.element("javaClientGenerator");
+//        //设置MGB配置文件的数据库JavaBean文件生成位置
+//        node.attribute("targetProject").setValue(config.getProjectPath());
+//        node.attribute("targetPackage").setValue(config.getMapperPackage());
+//        node.attribute("type").setValue("XMLMAPPER");
+//
+//
+//        node = contextNode.element("table");
+//        //设置MGB配置文件的表名和类名
+//        node.attribute("enableCountByExample").setValue("false");
+//        node.attribute("enableUpdateByExample").setValue("false");
+//        node.attribute("enableDeleteByExample").setValue("false");
+//        node.attribute("enableSelectByExample").setValue("false");
+//        node.attribute("selectByExampleQueryId").setValue("false");
+//    }
 
     //获取MGB配置文件下的根节点下的指定子节点
     private Element getNode(Element MGBRoot, String nodeName) {

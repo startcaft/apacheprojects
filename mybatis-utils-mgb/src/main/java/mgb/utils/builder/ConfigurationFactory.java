@@ -12,8 +12,7 @@ public class ConfigurationFactory {
 
     public ConfigurationFactory() {
         this.singleton = true;
-        this.dbAccess = new DefaultDbAccess("jdbc:mysql://localhost:3306/test",
-                "com.mysql.jdbc.Driver","root","5904395");
+        this.dbAccess = new DefaultDbAccess();
     }
 
     public boolean isSingleton() {
