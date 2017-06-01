@@ -7,5 +7,20 @@
 配置Configuration的bean
 配置DataSource的bean
 可以自定DbAccess组件，继承自DbAccess即可。默认是用MySQL查询数据库所有表名。
-
 配置XmlConfigBuilder的Bean，2参构造和3参构造（自定义DbAccess组件实现）。
+
+
+依赖的包：
+org.mybatis.generator
+logback-classic
+    logback-core
+    slf4j-api
+dom4j
+spring-orm
+    spring-beans
+    spring-core
+    spring-jdbc
+    spring-tx
+commons-io
+druid
+mysql-connector-java
