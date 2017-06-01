@@ -1,47 +1,37 @@
 package com.startcaft.www;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import mgb.utils.builder.Configuration;
-import mgb.utils.builder.ConfigurationFactory;
 import mgb.utils.builder.XmlConfigBuilder;
-import org.dom4j.Document;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
-
-import java.io.InputStream;
-import java.io.StringWriter;
 
 /**
- * Hello world!
+ * test app
  */
 public class App {
     public static void main(String[] args) throws Exception {
 
-        InputStream is = App.class.getClassLoader().getResourceAsStream("generatorConfig.xml");
-        Configuration config = new ConfigurationFactory().createInstance();
+        //构建Configuration对象
+        Configuration config = new Configuration();
+        config.setJarPath("D:\\maven\\repo\\mysql\\mysql-connector-java\\5.1.40\\mysql-connector-java-5.1.40.jar");
+        config.setDriverClass("com.mysql.jdbc.Driver");
+        config.setConnectionURL("jdbc:mysql://localhost:3306/db_shiro");
+        config.setUserId("root");
+        config.setPassword("5904395");
+        config.setProjectPath("D:\\Github_Sources\\apache_projects_git\\mybatis-utils-mgb\\src\\main\\java");
+        config.setModelPackage("com.mgb.model");
+        config.setMapperPackage("com.mgb.mapper");
+        config.setDaoPackage("com.mgb.dao");
 
-        XmlConfigBuilder builder = new XmlConfigBuilder(is);
+        //构建DruidDataSource对象
+        DruidDataSource dataSource = new DruidDataSource();
+        // jdbc connection
+        dataSource.setUrl("jdbc:mysql://localhost:3306/db_shiro");
+        dataSource.setUsername("root");
+        dataSource.setPassword("5904395");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 
-        Document document = builder.builderConfig(config);
-
-        //创建字符串缓冲区
-        StringWriter fileWriter = new StringWriter();
-        //设置文件编码
-        OutputFormat xmlFormat = new OutputFormat();
-        xmlFormat.setEncoding("UTF-8");
-        // 设置换行
-        xmlFormat.setNewlines(true);
-        // 生成缩进
-        xmlFormat.setIndent(true);
-        // 使用4个空格进行缩进, 可以兼容文本编辑器
-        xmlFormat.setIndent("    ");
-
-        //创建写文件方法
-        XMLWriter xmlWriter = new XMLWriter(fileWriter,xmlFormat);
-        //写入文件
-        xmlWriter.write(document);
-        //关闭
-        xmlWriter.close();
-        // 输出xml
-        System.out.println(fileWriter.toString());
+        //构建XmlConfigBuilder对象，将DataSource实例和Configuration实例注入
+        XmlConfigBuilder builder = new XmlConfigBuilder(config,dataSource);
+        builder.builderConfig();
     }
 }

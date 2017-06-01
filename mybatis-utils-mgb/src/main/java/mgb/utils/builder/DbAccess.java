@@ -18,10 +18,12 @@ public abstract class DbAccess {
         this.dataSource = dataSource;
     }
 
+    public DbAccess(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     /**
      * 执行指定SQL语句，获取所有表名
-     * @param sql
-     * @return
      */
-    public abstract List<String> getTables(String sql);
+    public abstract List<String> getTables();
 }
