@@ -23,32 +23,19 @@ public class XmlConfigBuilder {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(XmlConfigBuilder.class);
 
+    private DbTableHandler tableHandler;
     private Configuration config;
 
-    private DbAccess dbAccess;
-
-    private DataSource dataSource;
-
-    public Configuration getConfig() {
-        return config;
-    }
-
-    public void setConfig(Configuration config) {
-        this.config = config;
-    }
-
     //构造自定义的DbAccess组件
-    public XmlConfigBuilder(Configuration config, DbAccess dbAccess, DataSource dataSource) {
-        this.config = config;
-        this.dbAccess = dbAccess;
-        this.dataSource = dataSource;
+    public XmlConfigBuilder(DbTableHandler tableHandler) {
+        this.tableHandler = tableHandler;
+        this.config = tableHandler.getConfiguration();
     }
 
     //默认构造DefaultDbAccess实例
-    public XmlConfigBuilder(Configuration config, DataSource dataSource) {
-        this.config = config;
-        this.dataSource = dataSource;
-        this.dbAccess = new DefaultDbAccess(dataSource);
+    public XmlConfigBuilder(Configuration config) {
+        this.tableHandler = new MySqlTableNamesHandler(config);
+        this.config = tableHandler.getConfiguration();
     }
 
     public void builderConfig() throws Exception {
@@ -59,7 +46,7 @@ public class XmlConfigBuilder {
         File file = FileUtils.getFile(config.getJarPath());
         String errorMsg = "找不到指定的JDBC驱动包文件";
 
-        if (file.exists()) {
+        if (!file.exists()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(errorMsg);
             }
@@ -69,7 +56,7 @@ public class XmlConfigBuilder {
         //验证指定的projectPath是否存在
         errorMsg = "找不到指定的项目路径";
         file = FileUtils.getFile(config.getProjectPath());
-        if (file.exists()) {
+        if (!file.exists()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(errorMsg);
             }
@@ -77,7 +64,7 @@ public class XmlConfigBuilder {
         }
 
 
-        List<String> tables = this.dbAccess.getTables();
+        List<String> tables = this.tableHandler.getTables();
         for (String name : tables) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(name);
