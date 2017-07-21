@@ -9,7 +9,8 @@
 		<module>../redis-hello-vote</module>
         <module>redisstring</module>
 		<module>../redis-string</module>
-	</modules>
+        <module>../redis-type-list</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<!-- 自定义属性 -->
