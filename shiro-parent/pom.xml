@@ -7,6 +7,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
 		<module>../redis-hello-vote</module>
+        <module>redisstring</module>
+		<module>../redis-string</module>
 	</modules>
 	<packaging>pom</packaging>
 
