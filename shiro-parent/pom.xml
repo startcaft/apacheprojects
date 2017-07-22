@@ -10,6 +10,7 @@
         <module>redisstring</module>
 		<module>../redis-string</module>
         <module>../redis-type-list</module>
+        <module>../redis-type-set</module>
     </modules>
 	<packaging>pom</packaging>
 
