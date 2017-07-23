@@ -11,6 +11,7 @@
 		<module>../redis-string</module>
         <module>../redis-type-list</module>
         <module>../redis-type-set</module>
+        <module>../redis-type-hash</module>
     </modules>
 	<packaging>pom</packaging>
 
