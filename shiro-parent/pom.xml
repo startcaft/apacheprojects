@@ -13,6 +13,7 @@
         <module>../redis-type-set</module>
         <module>../redis-type-hash</module>
         <module>../redis-type-zset</module>
+        <module>../redis-transaction-basic</module>
     </modules>
 	<packaging>pom</packaging>
 
