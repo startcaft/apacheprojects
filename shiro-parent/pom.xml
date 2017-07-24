@@ -12,6 +12,7 @@
         <module>../redis-type-list</module>
         <module>../redis-type-set</module>
         <module>../redis-type-hash</module>
+        <module>../redis-type-zset</module>
     </modules>
 	<packaging>pom</packaging>
 
