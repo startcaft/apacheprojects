@@ -128,4 +128,68 @@ public class RedisBasicTransactionTest {
             System.out.println("在获取expire-key的值为:" + val);
         }
     }
+
+
+    ///////////////正常执行事务，全体代表有错误的命令，冤头债主代表逻辑错误///////////////////
+    @Test
+    public void normalTransaction(){
+        {
+            Transaction transaction = jedis.multi();
+
+            //命令入队
+            transaction.set("k1","v1");
+            transaction.set("k2","v2");
+
+            transaction.exec();//执行
+        }
+    }
+
+    ///////////////discard事务，相当于回滚事务///////////////////
+    @Test
+    public void discardTransaction(){
+        {
+            Transaction transaction = jedis.multi();
+
+            //命令入队
+            transaction.set("k3","v3");
+            transaction.set("k4","v4");
+
+            //如果出现问题
+            //...
+
+            transaction.discard();//回滚事务
+        }
+    }
+
+    ///////////////check and set，redis中的乐观锁///////////////////
+    @Test
+    public void casTest(){
+        {
+            jedis.set("balance","100");
+            int balance;//可用余额
+            jedis.set("debt","0");
+            int debt;//欠额
+            int amtTosubtract = 10;//消费金额
+
+            jedis.watch("balance");
+            //jedis.set("balance","5");//此句用于模仿其他客户端对key的修改
+            balance = Integer.parseInt(jedis.get("balance"));
+            if (balance < amtTosubtract){
+                jedis.unwatch();//取消对key的监控。
+                System.out.println("modify");
+            }
+            else {
+                System.out.println("********************transaction");
+                Transaction tran = jedis.multi();
+                tran.decrBy("balance",amtTosubtract);
+                tran.incrBy("debt",amtTosubtract);
+                tran.exec();
+
+                balance = Integer.parseInt(jedis.get("balance"));
+                debt = Integer.parseInt(jedis.get("debt"));
+                System.out.println("********************" + balance);
+                System.out.println("********************" + debt);
+            }
+        }
+    }
 }
