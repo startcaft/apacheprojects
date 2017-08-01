@@ -7,14 +7,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
 		<module>../redis-hello-vote</module>
-        <module>redisstring</module>
 		<module>../redis-string</module>
         <module>../redis-type-list</module>
         <module>../redis-type-set</module>
         <module>../redis-type-hash</module>
         <module>../redis-type-zset</module>
         <module>../redis-transaction-basic</module>
-    </modules>
+		<module>../redis-jedis-spring</module>
+	</modules>
 	<packaging>pom</packaging>
 
 	<!-- 自定义属性 -->
