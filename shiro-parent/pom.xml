@@ -15,7 +15,8 @@
         <module>../redis-transaction-basic</module>
 		<module>../redis-jedis-spring</module>
 		<module>../activemq-p2p</module>
-	</modules>
+        <module>../activemq-pub-sub</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<!-- 自定义属性 -->
