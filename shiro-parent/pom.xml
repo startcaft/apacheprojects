@@ -16,6 +16,7 @@
 		<module>../redis-jedis-spring</module>
 		<module>../activemq-p2p</module>
         <module>../activemq-pub-sub</module>
+        <module>../activemq-spring</module>
     </modules>
 	<packaging>pom</packaging>
 
