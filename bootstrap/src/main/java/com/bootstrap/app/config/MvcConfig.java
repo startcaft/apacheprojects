@@ -23,6 +23,8 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             registry.addViewController("/gridsystem/1").setViewName("gridsystem/grid");
             registry.addViewController("/gridsystem/2").setViewName("gridsystem/grid2");
             registry.addViewController("/gridsystem/3").setViewName("gridsystem/grid3");
+
+            registry.addViewController("/container").setViewName("container/container");
         }
     }
 
