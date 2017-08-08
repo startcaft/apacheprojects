@@ -19,6 +19,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     /*配置快捷的ViewController，只是页面跳转的Controller*/
     public void addViewControllers(ViewControllerRegistry registry) {
+        {
+            registry.addViewController("/gridsystem/1").setViewName("gridsystem/grid");
+            registry.addViewController("/gridsystem/2").setViewName("gridsystem/grid2");
+            registry.addViewController("/gridsystem/3").setViewName("gridsystem/grid3");
+        }
     }
 
     /*接受路径参数中的. ，/a/b/c.d*/
