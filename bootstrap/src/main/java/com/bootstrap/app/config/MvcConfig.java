@@ -39,6 +39,24 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             registry.addViewController("/global/paiban/address").setViewName("globalstyle/paiban/address");
             registry.addViewController("/global/paiban/blockquote").setViewName("globalstyle/paiban/blockquote");
             registry.addViewController("/global/paiban/list").setViewName("globalstyle/paiban/list");
+
+            //全局样式之代码
+            registry.addViewController("/global/code").setViewName("globalstyle/code/index");
+            registry.addViewController("/global/code/inline").setViewName("globalstyle/code/inline_code");
+            registry.addViewController("/global/code/input").setViewName("globalstyle/code/user_input");
+            registry.addViewController("/global/code/block").setViewName("globalstyle/code/code_block");
+            registry.addViewController("/global/code/var").setViewName("globalstyle/code/variable");
+            registry.addViewController("/global/code/print").setViewName("globalstyle/code/print");
+
+            //全局样式之表格
+            registry.addViewController("/global/table").setViewName("globalstyle/table/index");
+            registry.addViewController("/global/table/base").setViewName("globalstyle/table/base");
+            registry.addViewController("/global/table/strip").setViewName("globalstyle/table/strip");
+            registry.addViewController("/global/table/border").setViewName("globalstyle/table/border");
+            registry.addViewController("/global/table/hover").setViewName("globalstyle/table/hover");
+            registry.addViewController("/global/table/condensed").setViewName("globalstyle/table/condensed");
+            registry.addViewController("/global/table/state").setViewName("globalstyle/table/state");
+            registry.addViewController("/global/table/responsive").setViewName("globalstyle/table/responsive");
         }
     }
 
