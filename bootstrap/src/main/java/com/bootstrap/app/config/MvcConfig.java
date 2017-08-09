@@ -57,6 +57,20 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             registry.addViewController("/global/table/condensed").setViewName("globalstyle/table/condensed");
             registry.addViewController("/global/table/state").setViewName("globalstyle/table/state");
             registry.addViewController("/global/table/responsive").setViewName("globalstyle/table/responsive");
+
+            //全局样式之表单
+            registry.addViewController("/global/form").setViewName("globalstyle/form/index");
+            registry.addViewController("/global/form/base").setViewName("globalstyle/form/base");
+            registry.addViewController("/global/form/inline").setViewName("globalstyle/form/inline");
+            registry.addViewController("/global/form/horizontal").setViewName("globalstyle/form/horizontal");
+            registry.addViewController("/global/form/support").setViewName("globalstyle/form/support");
+            registry.addViewController("/global/form/static").setViewName("globalstyle/form/static");
+            registry.addViewController("/global/form/focus").setViewName("globalstyle/form/focus");
+            registry.addViewController("/global/form/disable").setViewName("globalstyle/form/disable");
+            registry.addViewController("/global/form/readonly").setViewName("globalstyle/form/readonly");
+            registry.addViewController("/global/form/help").setViewName("globalstyle/form/help");
+            registry.addViewController("/global/form/state").setViewName("globalstyle/form/state");
+            registry.addViewController("/global/form/size").setViewName("globalstyle/form/size");
         }
     }
 
