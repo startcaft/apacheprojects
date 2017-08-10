@@ -94,6 +94,26 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             registry.addViewController("/global/fuzhu/float").setViewName("globalstyle/fuzhu/float");
             registry.addViewController("/global/fuzhu/center").setViewName("globalstyle/fuzhu/center");
             registry.addViewController("/global/fuzhu/showhide").setViewName("globalstyle/fuzhu/showhide");
+
+            //组件之图标
+            registry.addViewController("/component/icon").setViewName("components/icon/icon");
+
+            //组件之下拉菜单
+            registry.addViewController("/component/dropdown").setViewName("components/dropdownmenu/index");
+            registry.addViewController("/component/dropdown/base").setViewName("components/dropdownmenu/base");
+            registry.addViewController("/component/dropdown/align").setViewName("components/dropdownmenu/align");
+            registry.addViewController("/component/dropdown/head").setViewName("components/dropdownmenu/head");
+            registry.addViewController("/component/dropdown/divider").setViewName("components/dropdownmenu/divider");
+            registry.addViewController("/component/dropdown/disable").setViewName("components/dropdownmenu/disable");
+
+            //组件之按钮组
+            registry.addViewController("/component/btngroup").setViewName("components/btngroup/index");
+            registry.addViewController("/component/btngroup/base").setViewName("components/btngroup/base");
+            registry.addViewController("/component/btngroup/toolbar").setViewName("components/btngroup/toolbar");
+            registry.addViewController("/component/btngroup/size").setViewName("components/btngroup/size");
+            registry.addViewController("/component/btngroup/qiantao").setViewName("components/btngroup/qiantao");
+            registry.addViewController("/component/btngroup/vertical").setViewName("components/btngroup/vertical");
+            registry.addViewController("/component/btngroup/justified").setViewName("components/btngroup/justified");
         }
     }
 
