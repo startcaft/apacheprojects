@@ -84,6 +84,16 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             registry.addViewController("/global/image").setViewName("globalstyle/image/index");
             registry.addViewController("/global/image/responsive").setViewName("globalstyle/image/responsive");
             registry.addViewController("/global/image/style").setViewName("globalstyle/image/style");
+
+            //全局样式之辅助类
+            registry.addViewController("/global/fuzhu").setViewName("globalstyle/fuzhu/index");
+            registry.addViewController("/global/fuzhu/color").setViewName("globalstyle/fuzhu/color");
+            registry.addViewController("/global/fuzhu/background").setViewName("globalstyle/fuzhu/background");
+            registry.addViewController("/global/fuzhu/close").setViewName("globalstyle/fuzhu/closeBtn");
+            registry.addViewController("/global/fuzhu/caret").setViewName("globalstyle/fuzhu/caret");
+            registry.addViewController("/global/fuzhu/float").setViewName("globalstyle/fuzhu/float");
+            registry.addViewController("/global/fuzhu/center").setViewName("globalstyle/fuzhu/center");
+            registry.addViewController("/global/fuzhu/showhide").setViewName("globalstyle/fuzhu/showhide");
         }
     }
 
