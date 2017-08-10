@@ -79,6 +79,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             registry.addViewController("/global/button/size").setViewName("globalstyle/button/size");
             registry.addViewController("/global/button/active").setViewName("globalstyle/button/active");
             registry.addViewController("/global/button/disable").setViewName("globalstyle/button/disable");
+
+            //全局样式之图片
+            registry.addViewController("/global/image").setViewName("globalstyle/image/index");
+            registry.addViewController("/global/image/responsive").setViewName("globalstyle/image/responsive");
+            registry.addViewController("/global/image/style").setViewName("globalstyle/image/style");
         }
     }
 
