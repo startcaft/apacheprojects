@@ -17,6 +17,7 @@
 		<module>../activemq-p2p</module>
         <module>../activemq-pub-sub</module>
         <module>../activemq-spring</module>
+        <module>../activemq-spring-dynamic</module>
     </modules>
 	<packaging>pom</packaging>
 

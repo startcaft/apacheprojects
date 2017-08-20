@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<activeMQ>
+
+    <brokerUrl>tcp://114.115.145.244:61616</brokerUrl>
+    <thisCode>central</thisCode>
+    <jmsUsername>startcaft</jmsUsername>
+    <jmsPassword>5904395</jmsPassword>
+
+    <destinations>
+        <queue code="one" name="one.queue" remark="一号测试队列"/>
+        <queue code="two" name="two.queue" remark="二号测试队列"/>
+        <queue code="three" name="three.queue" remark="三号测试队列"/>
+    </destinations>
+
+    <listeners>
+        <queueListener code="one" remark="一号队列监听器"/>
+        <queueListener code="two" remark="二号队列监听器"/>
+    </listeners>
+
+</activeMQ>
